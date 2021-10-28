@@ -1,0 +1,46 @@
+require('dotenv').config();
+
+const tmi = require('tmi.js');
+const request = require('request'); //npm install request
+
+const client = new tmi.Client({
+	options: { debug: true },
+	identity: {
+		username: process.env.TWITCH_BOT_USERNAME,
+		password: process.env.TWITCH_OAUTH_TOKEN
+	},
+	channels: [ 'codilab' ]
+});
+
+client.connect();
+
+client.on('message', (channel, tags, message, self) => {
+	// Ignore echoed messages.
+	if(self) return;
+
+	if(message.toLowerCase() === '!hello') {
+		// "@alca, heya!"
+		client.say(channel, `@${tags.username}, heya!`);
+	}
+
+	ResultadoPesquisa = message.split(" ",4); //Splice the string to organize the search
+
+    if (ResultadoPesquisa[0] == "!pesquisar")// Function to search any electronic component
+    {
+        ResultadoPesquisa.splice(0,1); //Removed '!pesquisar'
+        ResultadoPesquisa = ResultadoPesquisa.join('%20'); //%20  was used because it'necessary on URL mouser where has blank space.
+        link = 'https://br.mouser.com/c/?q='+ResultadoPesquisa; //Link Monted
+        MessageToBackChat = "Acesse o link para ver os resultados: " + link + " :) "; //Message to chat message
+        client.say(channel, MessageToBackChat);// Return message to chat
+    }
+    
+	if (ResultadoPesquisa[0] == "!liga"){
+		request("http://192.168.0.108/H");
+		client.say(channel,`Tudo bem @${tags.username}, ligando!`);
+	}
+	if (ResultadoPesquisa[0] == "!desliga"){
+		request("http://192.168.0.108/L");
+		client.say(channel,`Tudo bem @${tags.username}, desligando!`);
+	}
+});
+				
