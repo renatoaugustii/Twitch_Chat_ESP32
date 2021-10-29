@@ -73,4 +73,4 @@ The example is using three outputs LEDS, change the code to your desire;
 ---
 ### See more on my channel on Twitch:
 
-My Twitch Channel: <b>[Codilab](twitch.tv/codilab)</b>
+My Twitch Channel: <b>[Codilab](https://www.twitch.tv/codilab)</b>
