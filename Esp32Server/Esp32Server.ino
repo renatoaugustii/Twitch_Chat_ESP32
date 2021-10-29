@@ -1,67 +1,76 @@
 /*
- WiFi Web Server LED Blink
+  TWITCH CHAT CONNECTION USING tmi.JS API
+   
+   Author: Eng. Renato Augusto
 
- A simple web server that lets you blink an LED via the web.
- This sketch will print the IP address of your WiFi Shield (once connected)
- to the Serial monitor. From there, you can open that address in a web browser
- to turn on and off the LED on pin 5.
+  LIBRARIES 
+      - WiFi.h 
 
- If the IP address of your shield is yourAddress:
- http://yourAddress/H turns the LED on
- http://yourAddress/L turns it off
+   License - CC BY-NC
 
- This example is written for a network using WPA encryption. For
- WEP or WPA, change the Wifi.begin() call accordingly.
+   **  VERSION CONTROLER **
+   INICIAL VERSION
+   Data: 28/10/2021
+   Belo Horizonte - MG / Brasil 
 
- Circuit:
- * WiFi shield attached
- * LED attached to pin 5
+   Feel free to change the code or make a Pull Request.
+   
+*/
 
- created for arduino 25 Nov 2012
- by Tom Igoe
+#include <WiFi.h> //Include Wifi Lib
+#include "secrets.h" // Include my secret user and wifi password
 
-ported for sparkfun esp32 
-31.01.2017 by Jan Hendrik Berlin
- 
- */
+/* IO DEFINE */
+#define R_LED 12 // Define pins on ESP32 to use 
+#define Y_LED 13 // Define pins on ESP32 to use 
+#define B_LED 2 // Define pins on ESP32 to use 
 
-#include <WiFi.h>
-#include "secrets.h"
+// UNCOMMENT CODE BELOW IF YOU WANT PUT YOUR USER AND KEY HERE
+//const char* ssid     = "SSID"; //  Put here your SSID WiFi network
+//const char* password = "WIFI PASSWORD"; // Put here your password WiFi network
 
-//const char* ssid     = "SSID";
-//onst char* password = "WIFI PASSWORD";
-char ssid[] = SECRET_SSID;   // your network SSID (name) only if you are using secret.h
-char password[] = SECRET_PASS;   // your network password only if you are using secret.h
+//IF YOU ARE USING SECRETS.H KEEP THE CODE BELOW, IF NOT, COMMENT NEXT 2 LINES BELOW
+char ssid[] = SECRET_SSID;   // Your network SSID (name) only if you are using secret.h
+char password[] = SECRET_PASS;   // Your network password only if you are using secret.h
 
-WiFiServer server(80);
+/* NET WORK CONFIGURATION*/
+WiFiServer server(80); // Port used
+IPAddress local_IP(192, 168, 0, 108);// Set your Static IP address
+IPAddress gateway(192, 168, 0, 1); // Set your Gateway IP address
+IPAddress subnet(255, 255, 0, 0); // Network Mask
+
 
 void setup()
 {
+    // Start configuration 
     Serial.begin(115200);
-    pinMode(2, OUTPUT);      // set the LED pin mode
+    pinMode(Y_LED, OUTPUT);      // set the LED pin mode
+    pinMode(R_LED, OUTPUT);      // set the LED pin mode
+    pinMode(B_LED, OUTPUT);      // set the LED pin mode
 
     delay(10);
 
     // We start by connecting to a WiFi network
+    // Configures static IP address
+    if (!WiFi.config(local_IP, gateway, subnet)) { //Try to connect
+    Serial.println("STA Failed to configure"); // If conncetion fail, print on Screen this message
+    }
 
-    Serial.println();
-    Serial.println();
+    // Print on Screen the informations about Network name
     Serial.print("Connecting to ");
     Serial.println(ssid);
-
-    WiFi.begin(ssid, password);
-
+    WiFi.begin(ssid, password); //Inicialize the conection using user and pass
+ 
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
-        Serial.print(".");
+        Serial.print("."); //Print dots on screen while wait the connection
     }
 
     Serial.println("");
-    Serial.println("WiFi connected.");
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
-    
-    server.begin();
+    Serial.println("WiFi connected.");// Print on screen if the connection has been successful
+    Serial.println("IP address: "); 
+    Serial.println(WiFi.localIP()); // Print the IP used on screen
+    server.begin(); // Inicialize the server
 
 }
 
@@ -76,7 +85,7 @@ void loop(){
     while (client.connected()) {            // loop while the client's connected
       if (client.available()) {             // if there's bytes to read from the client,
         char c = client.read();             // read a byte, then
-        Serial.write(c);                    // print it out the serial monitor
+        Serial.write(c); 
         if (c == '\n') {                    // if the byte is a newline character
 
           // if the current line is blank, you got two newline characters in a row.
@@ -88,10 +97,6 @@ void loop(){
             client.println("Content-type:text/html");
             client.println();
 
-            // the content of the HTTP response follows the header:
-            client.print("Click <a href=\"/H\">here</a> to turn the LED on pin 5 on.<br>");
-            client.print("Click <a href=\"/L\">here</a> to turn the LED on pin 5 off.<br>");
-
             // The HTTP response ends with another blank line:
             client.println();
             // break out of the while loop:
@@ -101,14 +106,26 @@ void loop(){
           }
         } else if (c != '\r') {  // if you got anything else but a carriage return character,
           currentLine += c;      // add it to the end of the currentLine
-        }
-
+        }// print it out the serial monitor
+        
         // Check to see if the client request was "GET /H" or "GET /L":
-        if (currentLine.endsWith("GET /H")) {
-          digitalWrite(2, HIGH);               // GET /H turns the LED on
+        if (currentLine.endsWith("GET /Y")) {
+          digitalWrite(Y_LED, HIGH);               // GET /Y turns the LED on
         }
-        if (currentLine.endsWith("GET /L")) {
-          digitalWrite(2, LOW);                // GET /L turns the LED off
+        if (currentLine.endsWith("GET /y")) {
+          digitalWrite(Y_LED, LOW);                // GET /y turns the LED off
+        }
+        if (currentLine.endsWith("GET /R")) {
+          digitalWrite(R_LED, HIGH);               // GET /R turns the LED on
+        }
+        if (currentLine.endsWith("GET /r")) {
+          digitalWrite(R_LED, LOW);                // GET /r turns the LED off
+        }
+        if (currentLine.endsWith("GET /B")) {
+          digitalWrite(B_LED, HIGH);               // GET /B turns the LED on
+        }
+        if (currentLine.endsWith("GET /b")) {
+          digitalWrite(B_LED, LOW);                // GET /b turns the LED off
         }
       }
     }

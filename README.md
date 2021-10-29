@@ -43,7 +43,7 @@ Its necessary to request URL and send message to ESP32.
 ```bash
 $ npm install request
 ```
-- ### Installing Request
+- ### Installing dotenv
 It's necessary to hide the user and passwords.
 ```bash
 $ npm install dotenv
@@ -51,10 +51,15 @@ $ npm install dotenv
 - ### User and Keyword
 Open the <b>example.env</b> and put your credencial to use API authenticator. Remove the example and let only .env if you made all good, you can test on chat now.
 
+---
 ### Version Tested
 The software was tested  using the version below:    
 <b>Node:</b> 16.13.0  
 <b>npm:</b> 8.1.1  
-<b>tmi.js</b> 1.8.5
+<b>tmi.js</b> 1.8.5  
+<b>dotenv:</b> 10.0.0  
+<b>request</b> 2.88.2  
+
+---
 
 ## ON ESP32

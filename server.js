@@ -14,6 +14,7 @@ const client = new tmi.Client({
 
 client.connect();
 
+
 client.on('message', (channel, tags, message, self) => {
 	// Ignore echoed messages.
 	if(self) return;
@@ -34,13 +35,29 @@ client.on('message', (channel, tags, message, self) => {
         client.say(channel, MessageToBackChat);// Return message to chat
     }
     
-	if (ResultadoPesquisa[0] == "!liga"){
-		request("http://192.168.0.108/H");
-		client.say(channel,`Tudo bem @${tags.username}, ligando!`);
+	if (ResultadoPesquisa[0] == "!liga_amarelo"){
+		request("http://192.168.0.108/Y");
+		client.say(channel,`Tudo bem @${tags.username}, ligando o LED amarelo!`);
 	}
-	if (ResultadoPesquisa[0] == "!desliga"){
-		request("http://192.168.0.108/L");
-		client.say(channel,`Tudo bem @${tags.username}, desligando!`);
+	if (ResultadoPesquisa[0] == "!desliga_amarelo"){
+		request("http://192.168.0.108/y");
+		client.say(channel,`Tudo bem @${tags.username}, desligando o LED amarelo!`);
+	}
+	if (ResultadoPesquisa[0] == "!liga_vermelho"){
+		request("http://192.168.0.108/R");
+		client.say(channel,`Tudo bem @${tags.username}, ligando o LED vermelho!`);
+	}
+	if (ResultadoPesquisa[0] == "!desliga_vermelho"){
+		request("http://192.168.0.108/r");
+		client.say(channel,`Tudo bem @${tags.username}, desligando o LED vermelho!`);
+	}
+	if (ResultadoPesquisa[0] == "!liga_azul"){
+		request("http://192.168.0.108/B");
+		client.say(channel,`Tudo bem @${tags.username}, ligando o LED Azul!`);
+	}
+	if (ResultadoPesquisa[0] == "!desliga_azul"){
+		request("http://192.168.0.108/b");
+		client.say(channel,`Tudo bem @${tags.username}, desligando o LED Azul!`);
 	}
 });
 				
