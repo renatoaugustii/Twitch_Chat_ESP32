@@ -1,5 +1,5 @@
 # Twitch_Chat_ESP32
-Using twitch chat to turn on or off leds from my room.
+Using twitch chat to Turn ON or OFF LEDs.
 
 Step By Step
 
@@ -10,21 +10,21 @@ Step By Step
 First it's necessay installing Node.js from oficial website: [Node.Js](https://nodejs.org/en/) and then verify the Node and npm version.
 
 ```bash
-$ node -v 
+node -v 
 ```
 ```bash
-$ npm -v 
+npm -v 
 ```
 
 - ### Create Folder
 Select a folder to create a server and ESP32 files.
 
 ```bash
-$ mkdir my_twitch_bot
+mkdir my_twitch_bot
 ```
 Inside bot folder use the code:
 ```bash
-$ npm init
+npm init
 ```
 - ### Create JavaScript Server
 
@@ -35,18 +35,18 @@ Example:   <b>server.js </b>
 - ### Installing tmi.js
 On website [tmi.js](https://tmijs.com/) look how to install the API. 
 ```bash
-$ npm i tmi.js
+npm i tmi.js
 ```
 
 - ### Installing Request
 Its necessary to request URL and send message to ESP32.
 ```bash
-$ npm install request
+npm install request
 ```
 - ### Installing dotenv
 It's necessary to hide the user and passwords.
 ```bash
-$ npm install dotenv
+npm install dotenv
 ```
 - ### User and Keyword
 Open the <b>example.env</b> and put your credencial to use API authenticator. Remove the example and let only .env if you made all good, you can test on chat now.
@@ -63,3 +63,9 @@ The software was tested  using the version below:
 ---
 
 ## ON ESP32
+
+Installing Wifi.h 
+```bash
+WiFi.h
+```
+The example is using three outputs LEDS, change the code to your desire;
